@@ -1,3 +1,11 @@
+import { Heading } from "native-base";
+import Container from "../components/container";
+
 export default function ServiceProvider() {
-  return null;
+  return (
+    <Container>
+      <Heading>Prestador</Heading>
+
+    </Container>
+  );
 }
