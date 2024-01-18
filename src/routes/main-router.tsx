@@ -1,9 +1,12 @@
-import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from '../screens/home';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import GrowerScreen from '../screens/grower';
-import ServiceProviderScreen from '../screens/service-provider';
+import { NavigationContainer } from "@react-navigation/native";
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import HomeScreen from "../screens/home";
+import GrowerScreen from "../screens/grower";
+import ServiceProviderScreen from "../screens/service-provider";
+import StopControl from "../screens/stop-control";
+import RequestsScreen from "../screens/requests";
 
 const Stack = createNativeStackNavigator();
 
@@ -11,10 +14,32 @@ export default function MainRouter() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="app" component={HomeScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="grower" component={GrowerScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="serviceProvider" component={ServiceProviderScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="home"
+          component={HomeScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="grower"
+          component={GrowerScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="serviceProvider"
+          component={ServiceProviderScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="stopControl"
+          component={StopControl}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="requestsScreen"
+          component={RequestsScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
