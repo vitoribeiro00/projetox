@@ -20,23 +20,13 @@ export default function HomeScreen({ navigation }) {
           </Button>
 
           <Button
-            onPress={() => navigation.navigate("serviceProvider")}
-            variant="outline"
-            rounded={15}
-            borderColor="#1414b8"
-            colorScheme="#000000"
-          >
-            Prestador de Serviço
-          </Button>
-
-          <Button
             onPress={() => navigation.navigate("requestsScreen")}
             variant="outline"
             rounded={15}
             borderColor="#1414b8"
             colorScheme="#000000"
           >
-            Requisiçõpes
+            Prestador de Serviço
           </Button>
         </VStack>
       </VStack>
