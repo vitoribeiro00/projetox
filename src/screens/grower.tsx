@@ -16,63 +16,84 @@ import Header from "../components/header";
 import { Controller, useForm } from "react-hook-form";
 import CreateRequest from "../services/create-request";
 
-
-
 export default function GrowerScreen({ navigation }) {
-  const { control, handleSubmit, formState: { errors }, reset} = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
     defaultValues: {
-      name: '',
-      // code: '',
-      // owner: '',
-      // farm: '',
-      // plot: '',
-      // operation: '',
-      // activity: '',
-      // insumo: '',
-      // areaHa: '',
-    }
+      name: "",
+      code: "",
+      // owner: "",
+      farm: "",
+      plot: "",
+      operation: "",
+      activity: "",
+      insumo: "",
+      areaHa: "",
+    },
   });
 
   const onSubmit = (data) => {
-    CreateRequest(data)
-    reset()
+    CreateRequest(data);
+    reset();
   };
 
   return (
     <Container>
-      <Header title="Produtor"/>
+      <Header title="Produtor" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack space={3}>
-        <Controller
-          control={control}
-          rules={{
-          required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <>
-              <Text fontSize={16} marginLeft={1}>
-                Nome
-              </Text>
-              <Input
-                size="lg"
-                variant="rounded"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            </>
-          )}
-          name="name"
-        />
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Nome
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="name"
+          />
 
-          {/* <Text fontSize={16} marginLeft={1}>
-            Número de Inscrição
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Número de Inscrição
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="code"
+          />
 
-          <FormControl isRequired isInvalid>
+          {/* <FormControl >
             <FormControl.Label>Área de: </FormControl.Label>
             <Select
+              size="lg"
               variant="rounded"
               minWidth="200"
               accessibilityLabel="Escolha o serviço"
@@ -86,42 +107,139 @@ export default function GrowerScreen({ navigation }) {
               <Select.Item label="Empresa" value="company" />
               <Select.Item label="Terceiro" value="third" />
             </Select>
-            <FormControl.ErrorMessage
-              leftIcon={<WarningOutlineIcon size="xs" />}
-            >
-              Por favor, selecione!
-            </FormControl.ErrorMessage>
-          </FormControl>
+          </FormControl> */}
 
-          <Text fontSize={16} marginLeft={1}>
-            Fazenda
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Fazenda
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="farm"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Talhão
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Talhão
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="plot"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Operação
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Operação
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="operation"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Atividade
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Atividade
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="activity"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Insumo
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Insumo
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="insumo"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Área(ha)
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input> */}
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Área(ha)
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="areaHa"
+          />
 
           <Button
             onPress={handleSubmit(onSubmit)}
@@ -131,11 +249,9 @@ export default function GrowerScreen({ navigation }) {
             colorScheme={"#000000"}
             marginTop={5}
             marginBottom={5}
-
           >
             Requisistar
           </Button>
-          
         </VStack>
       </ScrollView>
     </Container>
