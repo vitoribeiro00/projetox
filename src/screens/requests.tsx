@@ -6,15 +6,24 @@ import {
   FlatList,
 } from "native-base";
 import Container from "../components/container";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/header";
 import { TouchableWithoutFeedback } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import listRequests from "../services/list-request";
 
 export default function RequestsScreen({ navigation }) {
+  const [myRequests, setMyRequests] = useState([])
+  const getRequests = async () => {
+    const requests = await listRequests()
+    setMyRequests(requests)
+  }
 
-let listRequest = listRequests('requests')
+  useEffect(() => {
+    getRequests()
+  }, [])
+
+
 
   return (
     <Container>
@@ -26,7 +35,7 @@ let listRequest = listRequests('requests')
               <AntDesign name="right" size={24} color="black" />
             </View>
             <FlatList
-            data={listRequest}
+            data={myRequests}
             />
           </TouchableWithoutFeedback>
         </VStack>

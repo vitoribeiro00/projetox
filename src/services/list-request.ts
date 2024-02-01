@@ -1,13 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 
-export default async function listRequests(requests) {
-  
- let listRequest = await AsyncStorage.getItem(requests)
+export default async function listRequests(): Promise<Request[]> {
+  const requests: Request[] = [];
 
-console.log(listRequest)
+  const listRequest = await AsyncStorage.getItem('requests')
 
- return listRequest;
+  JSON.parse(listRequest).map((request: Request) => {
+    requests.push(request)
+  })
+
+ return requests;
 
 }
 
