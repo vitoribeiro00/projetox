@@ -5,18 +5,19 @@ import {
   Input,
   Text,
   Button,
-  FormControl,
-  Select,
-  CheckIcon,
-  WarningOutlineIcon,
   ScrollView,
 } from "native-base";
+
+import { Controller, useForm } from "react-hook-form";
+
+import { useToast } from "react-native-toast-notifications";
+
 import Container from "../components/container";
 import Header from "../components/header";
-import { Controller, useForm } from "react-hook-form";
 import CreateRequest from "../services/create-request";
 
 export default function GrowerScreen({ navigation }) {
+  const toast = useToast();
   const {
     control,
     handleSubmit,
@@ -26,7 +27,7 @@ export default function GrowerScreen({ navigation }) {
     defaultValues: {
       name: "",
       code: "",
-      // owner: "",
+      owner: "",
       farm: "",
       plot: "",
       operation: "",
@@ -39,13 +40,18 @@ export default function GrowerScreen({ navigation }) {
   const onSubmit = (data) => {
     CreateRequest(data);
     reset();
+    toast.show("Requisição criada com sucesso!", {
+      placement: "top",
+      type: "success",
+      duration: 2000,
+    })
   };
 
   return (
     <Container>
       <Header title="Produtor" />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <VStack space={3}>
+        <VStack space={3} mx={2} mt={2}>
           <Controller
             control={control}
             rules={{

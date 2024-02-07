@@ -1,43 +1,67 @@
+import React, { useEffect, useState } from "react";
+
 import {
   VStack,
-  ScrollView,
-  Text,
-  View,
   FlatList,
+  Text,
+  HStack,
+  View,
 } from "native-base";
-import Container from "../components/container";
-import React, { useEffect, useState } from "react";
-import Header from "../components/header";
-import { TouchableWithoutFeedback } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
-import listRequests from "../services/list-request";
 
-export default function RequestsScreen({ navigation }) {
+import { useNavigation } from "@react-navigation/native";
+
+import Container from "../components/container";
+import Header from "../components/header";
+import listRequests from "../services/list-request";
+import { Request } from "../models/request-model";
+import { AntDesign } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
+
+export default function RequestsScreen() {
+  const navigation = useNavigation()
+  
   const [myRequests, setMyRequests] = useState([])
   const getRequests = async () => {
     const requests = await listRequests()
-    setMyRequests(requests)
+    console.log(requests)
+    if(requests){
+      setMyRequests(requests)
+    }
   }
 
   useEffect(() => {
     getRequests()
   }, [])
 
+  const requestItem = (request: Request) => {
+    console.log(request)
+    return (
+      
+        <VStack flex={1} flexDirection="row" alignItems="center" justifyContent="space-between" borderColor="black" borderWidth={2} borderRadius={10} p={3} my={2}>
+          <View>
+            <Text>Cliente: {request?.name}</Text>
+            <Text>Fazenda: {request?.farm}</Text>
+            <Text>Talhão: {request?.plot}</Text>
+            <Text>Operação: {request?.operation}</Text>
+          </View>
+          <View>
+            <AntDesign name="right" size={24} color="black" onPress={() => navigation.navigate("serviceProvider")} />
+          </View>
+          
+        </VStack>
 
+      
+    )
+  }
 
   return (
     <Container>
       <Header title="Requisições" />
-        <VStack space={3}>
-          <TouchableWithoutFeedback onPress={() => navigation.navigate("serviceProvider")}>
-            <View w="full" borderColor="black" borderWidth={1} borderRadius={10} padding={2} flex={1}  flexDirection="row" justifyContent="space-between">
-              <Text>Requisição 1</Text>
-              <AntDesign name="right" size={24} color="black" />
-            </View>
-            <FlatList
+        <VStack space={3} mx={5} my={2}>
+         <FlatList 
             data={myRequests}
-            />
-          </TouchableWithoutFeedback>
+            renderItem={({ item }) => requestItem(item)}
+         />
         </VStack>
     </Container>
   );

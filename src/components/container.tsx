@@ -8,7 +8,7 @@ type ContainerProps = {
 
 export default function Container({ children }: ContainerProps){
   return (
-    <VStack flex={1} mt={2} mx={5}>
+    <VStack flex={1}>
       {children}
     </VStack>
   )
