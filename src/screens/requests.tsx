@@ -17,8 +17,8 @@ import { Request } from "../models/request-model";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 
-export default function RequestsScreen() {
-  const navigation = useNavigation()
+export default function RequestsScreen({navigation}) {
+
   
   const [myRequests, setMyRequests] = useState([])
   const getRequests = async () => {

@@ -6,6 +6,9 @@ import {
   Text,
   Button,
   ScrollView,
+  FormControl,
+  Select,
+  CheckIcon,
 } from "native-base";
 
 import { Controller, useForm } from "react-hook-form";
@@ -44,7 +47,7 @@ export default function GrowerScreen({ navigation }) {
       placement: "top",
       type: "success",
       duration: 2000,
-    })
+    });
   };
 
   return (
@@ -96,24 +99,32 @@ export default function GrowerScreen({ navigation }) {
             name="code"
           />
 
-          {/* <FormControl >
-            <FormControl.Label>Área de: </FormControl.Label>
-            <Select
-              size="lg"
-              variant="rounded"
-              minWidth="200"
-              accessibilityLabel="Escolha o serviço"
-              placeholder="Escolha o serviço"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size={5} />,
-              }}
-              mt="1"
-            >
-              <Select.Item label="Empresa" value="company" />
-              <Select.Item label="Terceiro" value="third" />
-            </Select>
-          </FormControl> */}
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Área de:
+                </Text>
+                <Select
+                  size="lg"
+                  placeholder="Selecione"
+                  variant="rounded"
+                  selectedValue={value}
+                  onValueChange={(itemValue: string) => {
+                    onChange(itemValue);
+                  }}
+                >
+                  <Select.Item label="Empresa" value="empresa" />
+                  <Select.Item label="Terceiro" value="terceiro" />
+                </Select>
+              </>
+            )}
+            name="owner"
+          />
 
           <Controller
             control={control}

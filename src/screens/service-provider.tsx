@@ -16,83 +16,247 @@ import Container from "../components/container";
 import React from "react";
 import Header from "../components/header";
 
+import { Controller, useForm } from "react-hook-form";
+import CreateServiceProvider from "../services/create-service-provider";
+
 export default function ServiceProvider({ navigation }) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      date: "",
+      operator: "",
+      machine: "",
+      equipment: "",
+      startTime: "",
+      endTime: "",
+      insumo: "",
+      quantHa: "",
+      plot: "",
+    },
+  });
+
+  const onSubmit = (data) => {
+    CreateServiceProvider(data);
+    reset();
+  };
+
   return (
     <Container>
       <Header title="Controle de Serviços" />
-      <ScrollView>
-        <VStack space={3}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <VStack space={3} mx={2} mt={2}>
           <HStack justifyContent="space-between">
-            <Text fontSize={16}>
-              Código 1
-            </Text>
+            <Text fontSize={16}>Código 1</Text>
 
-            <Text fontSize={16}>
-              Nº da requisição: 2
-            </Text>
+            <Text fontSize={16}>Nº da requisição: 2</Text>
           </HStack>
-          <Text fontSize={16} marginLeft={1}>
-            Data
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
 
-          <Text fontSize={16} marginLeft={1}>
-            Operador
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Data
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="date"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Máquina
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Operador
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="operator"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Equipamento
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Máquina
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="machine"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Horário Inicial
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Equipamento
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="equipment"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Horário Final
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Horário Inicial
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="startTime"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Insumo
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Horário Final
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="endTime"
+          />
 
-          <Text fontSize={16} marginLeft={1}>
-            Quant. /ha
-          </Text>
-          <Input size="lg" variant={"rounded"}></Input>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Insumo
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="insumo"
+          />
 
-          <FormControl isRequired isInvalid>
-            <FormControl.Label>Fim de talhão? </FormControl.Label>
-            <Select
-              variant="rounded"
-              minWidth="200"
-              accessibilityLabel="Selecione"
-              placeholder="Selecione"
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size={5} />,
-              }}
-              mt="1"
-            >
-              <Select.Item label="Sim" value="company" />
-              <Select.Item label="Não" value="third" />
-            </Select>
-            <FormControl.ErrorMessage
-              leftIcon={<WarningOutlineIcon size="xs" />}
-            >
-              Por favor, selecione!
-            </FormControl.ErrorMessage>
-          </FormControl>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Quant. /ha
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="quantHa"
+          />
+
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Fim de talhão?
+                </Text>
+                <Select
+                  size='lg'
+                  placeholder="Selecione"
+                  variant="rounded"
+                  selectedValue={value}
+                  onValueChange={(itemValue: string) => {
+                    onChange(itemValue);
+                  }}
+                >
+                  <Select.Item label="Sim" value="sim"/>
+                  <Select.Item label="Não" value="nao"/>
+                </Select>
+              </>
+            )}
+            name="plot"
+          />
 
           <Button
             onPress={() => navigation.navigate("stopControl")}
@@ -107,7 +271,7 @@ export default function ServiceProvider({ navigation }) {
           </Button>
 
           <Button
-            onPress={() => navigation.navigate("serviceProvider")}
+            onPress={handleSubmit(onSubmit)}
             variant="outline"
             rounded={15}
             borderColor="#1414b8"
