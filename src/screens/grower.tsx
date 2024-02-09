@@ -18,6 +18,7 @@ import { useToast } from "react-native-toast-notifications";
 import Container from "../components/container";
 import Header from "../components/header";
 import CreateRequest from "../services/create-request";
+import uuid from 'react-native-uuid';
 
 export default function GrowerScreen({ navigation }) {
   const toast = useToast();
@@ -28,6 +29,7 @@ export default function GrowerScreen({ navigation }) {
     reset,
   } = useForm({
     defaultValues: {
+      id: uuid.v4(),
       name: "",
       code: "",
       owner: "",
@@ -99,7 +101,7 @@ export default function GrowerScreen({ navigation }) {
             name="code"
           />
 
-          <Controller
+          {/* <Controller
             control={control}
             rules={{
               required: true,
@@ -124,7 +126,7 @@ export default function GrowerScreen({ navigation }) {
               </>
             )}
             name="owner"
-          />
+          /> */}
 
           <Controller
             control={control}

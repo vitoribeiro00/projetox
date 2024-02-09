@@ -1,16 +1,12 @@
 import {
-  Center,
-  Heading,
   Input,
   VStack,
   Text,
   HStack,
-  FormControl,
   Select,
-  CheckIcon,
-  WarningOutlineIcon,
   ScrollView,
   Button,
+  Center,
 } from "native-base";
 import Container from "../components/container";
 import React from "react";
@@ -19,7 +15,10 @@ import Header from "../components/header";
 import { Controller, useForm } from "react-hook-form";
 import CreateServiceProvider from "../services/create-service-provider";
 
-export default function ServiceProvider({ navigation }) {
+import uuid from 'react-native-uuid';
+
+export default function ServiceProvider({ navigation, route }) {
+  const requestId = route?.params?.requestId;
   const {
     control,
     handleSubmit,
@@ -27,6 +26,7 @@ export default function ServiceProvider({ navigation }) {
     reset,
   } = useForm({
     defaultValues: {
+      id: uuid.v4(),
       date: "",
       operator: "",
       machine: "",
@@ -40,21 +40,23 @@ export default function ServiceProvider({ navigation }) {
   });
 
   const onSubmit = (data) => {
-    CreateServiceProvider(data);
+    CreateServiceProvider(requestId, data);
     reset();
   };
+
+  if(!requestId) return null;
 
   return (
     <Container>
       <Header title="Controle de Serviços" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <VStack space={3} mx={2} mt={2}>
-          <HStack justifyContent="space-between">
-            <Text fontSize={16}>Código 1</Text>
-
-            <Text fontSize={16}>Nº da requisição: 2</Text>
-          </HStack>
-
+          <Center>
+            <Text>Nº da requisição</Text>
+          </Center>
+          <Center>
+            <Text fontSize={16}> {`${requestId}`}</Text>
+          </Center>
           <Controller
             control={control}
             rules={{

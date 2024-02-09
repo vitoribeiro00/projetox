@@ -14,7 +14,4 @@ export default async function CreateStopControl(newStopControl: StopControl) {
 
   await AsyncStorage.setItem("stopsControls", JSON.stringify(stopControls));
 
-  const print = await AsyncStorage.getItem("stopsControls");
-
-  console.log(print);
 }

@@ -1,5 +1,6 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Request } from "../models/request-model";
 
 export default async function CreateRequest(newRequest: Request) {
   let requests: Request[] = [];

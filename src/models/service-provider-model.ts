@@ -1,4 +1,5 @@
 export type ServiceProvider = {
+    id: string;
     date: string;
     operator: string;
     machine: string;
