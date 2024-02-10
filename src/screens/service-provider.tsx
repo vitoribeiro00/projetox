@@ -9,16 +9,21 @@ import {
   Center,
 } from "native-base";
 import Container from "../components/container";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/header";
 
 import { Controller, useForm } from "react-hook-form";
 import CreateServiceProvider from "../services/create-service-provider";
 
 import uuid from 'react-native-uuid';
+import StopForm from "../components/stop-form";
 
 export default function ServiceProvider({ navigation, route }) {
   const requestId = route?.params?.requestId;
+  
+  const [stops, setStops] = useState([]);
+  const [viewStopsModal, setViewStopsModal] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -40,11 +45,29 @@ export default function ServiceProvider({ navigation, route }) {
   });
 
   const onSubmit = (data) => {
-    CreateServiceProvider(requestId, data);
+    CreateServiceProvider(requestId, stops, data);
     reset();
   };
 
-  if(!requestId) return null;
+  useEffect(() => {
+    console.log(stops)
+  }, [stops])
+
+  if(requestId === null){
+    return(
+      <Container>
+        <Text>Carregando....</Text>
+      </Container>
+    )
+    
+  }
+
+  if(viewStopsModal) {
+    return (
+      <StopForm setViewStopsModal={setViewStopsModal} setStops={setStops}/>
+    );
+  }
+  
 
   return (
     <Container>
@@ -261,7 +284,7 @@ export default function ServiceProvider({ navigation, route }) {
           />
 
           <Button
-            onPress={() => navigation.navigate("stopControl")}
+            onPress={() => setViewStopsModal(true)}
             variant="outline"
             rounded={15}
             borderColor="#1414b8"

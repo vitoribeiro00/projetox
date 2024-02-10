@@ -29,11 +29,7 @@ export default function MainRouter() {
           component={ServiceProviderScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="stopControl"
-          component={StopControl}
-          options={{ headerShown: false }}
-        />
+        
         <Stack.Screen
           name="requestsScreen"
           component={RequestsScreen}

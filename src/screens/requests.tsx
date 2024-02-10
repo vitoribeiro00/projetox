@@ -15,8 +15,6 @@ import { Request } from "../models/request-model";
 import { AntDesign } from "@expo/vector-icons";
 
 export default function RequestsScreen({navigation}) {
-
-  
   const [myRequests, setMyRequests] = useState([])
   const getRequests = async () => {
     const requests = await listRequests()

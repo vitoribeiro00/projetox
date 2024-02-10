@@ -33,7 +33,7 @@ export default function HomeScreen({ navigation }) {
           Prestador de Serviço
         </Button>
 
-        {/* <Button
+        <Button
           w="full"
           size="lg"
           onPress={async () => await AsyncStorage.clear()}
@@ -44,7 +44,7 @@ export default function HomeScreen({ navigation }) {
          
         >
           Limpar AsyncStorage
-        </Button> */}
+        </Button>
 
         </VStack>
     </Container>
