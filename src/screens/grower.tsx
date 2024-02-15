@@ -18,7 +18,7 @@ import { useToast } from "react-native-toast-notifications";
 import Container from "../components/container";
 import Header from "../components/header";
 import CreateRequest from "../services/create-request";
-import uuid from 'react-native-uuid';
+import uuid from "react-native-uuid";
 
 export default function GrowerScreen({ navigation }) {
   const toast = useToast();
@@ -42,6 +42,14 @@ export default function GrowerScreen({ navigation }) {
     },
   });
 
+  const isValidInputNumeric = (text) => {
+    return !isNaN(text);
+  };
+
+  const isValidInputText = (text) => {
+    return isNaN(text);
+  };
+
   const onSubmit = (data) => {
     CreateRequest(data);
     reset();
@@ -61,6 +69,10 @@ export default function GrowerScreen({ navigation }) {
             control={control}
             rules={{
               required: true,
+              validate: {
+                validInput: (value) =>
+                  isValidInputText(value),
+              },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
@@ -73,16 +85,24 @@ export default function GrowerScreen({ navigation }) {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
+                  keyboardType="default"
                 />
               </>
             )}
             name="name"
           />
+          {errors.name && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente letras.</Text>
+          )}
 
           <Controller
             control={control}
             rules={{
               required: true,
+              validate: {
+                validInput: (value) =>
+                  isValidInputNumeric(value),
+              },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
@@ -95,11 +115,15 @@ export default function GrowerScreen({ navigation }) {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
+                  keyboardType="numeric"
                 />
               </>
             )}
             name="code"
           />
+          {errors.code && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente números.</Text>
+          )}
 
           {/* <Controller
             control={control}
@@ -144,16 +168,24 @@ export default function GrowerScreen({ navigation }) {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
+                  keyboardType="default"
                 />
               </>
             )}
             name="farm"
           />
+          {errors.farm && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
+          )}
 
           <Controller
             control={control}
             rules={{
-              required: true,
+              required: true ||"É obrigatório o preenchimento.",
+              validate: {
+                validInput: (value) =>
+                  isValidInputNumeric(value),
+              },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
@@ -166,11 +198,15 @@ export default function GrowerScreen({ navigation }) {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
+                  keyboardType="numeric"
                 />
               </>
             )}
             name="plot"
           />
+          {errors.plot && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente números.</Text>
+          )}
 
           <Controller
             control={control}
@@ -188,11 +224,15 @@ export default function GrowerScreen({ navigation }) {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
+                  keyboardType="default"
                 />
               </>
             )}
             name="operation"
           />
+          {errors.operation && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
+          )}
 
           <Controller
             control={control}
@@ -210,11 +250,15 @@ export default function GrowerScreen({ navigation }) {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
+                  keyboardType="default"
                 />
               </>
             )}
             name="activity"
           />
+          {errors.activity && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
+          )}
 
           <Controller
             control={control}
@@ -232,16 +276,24 @@ export default function GrowerScreen({ navigation }) {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
+                  keyboardType="default"
                 />
               </>
             )}
             name="insumo"
           />
+          {errors.insumo && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
+          )}
 
           <Controller
             control={control}
             rules={{
               required: true,
+              validate: {
+                validInput: (value) =>
+                  isValidInputNumeric(value),
+              },
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
@@ -254,11 +306,15 @@ export default function GrowerScreen({ navigation }) {
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
+                  keyboardType="numeric"
                 />
               </>
             )}
             name="areaHa"
           />
+          {errors.areaHa && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente números.</Text>
+          )}
 
           <Button
             onPress={handleSubmit(onSubmit)}

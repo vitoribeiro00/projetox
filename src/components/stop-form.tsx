@@ -8,12 +8,18 @@ import {
   Heading,
 } from "native-base";
 import Container from "../components/container";
-import React from "react";
-import Header from "../components/header";
+import React, { useState } from "react";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Controller, useForm } from "react-hook-form";
 import { AntDesign } from "@expo/vector-icons";
 
-export default function StopForm({setViewStopsModal, setStops}) {
+export default function StopForm({ setViewStopsModal, setStops }) {
+  const [isStartTimeVisible, setStartTimeVisibility] = useState(false);
+  const [isEndTimeVisible, setEndTimeVisibility] = useState(false);
+
+  const [selectedStartTime, setSelectedStartTime] = useState(null);
+  const [selectedEndTime, setSelectedEndTime] = useState(null);
+
   const {
     control,
     handleSubmit,
@@ -35,9 +41,21 @@ export default function StopForm({setViewStopsModal, setStops}) {
 
   return (
     <Container>
-      
-      <VStack w="full" backgroundColor="black" py={5} px={2} flexDirection="row" alignItems="center">
-        <AntDesign name="left" size={24} color="white" onPress={() => setViewStopsModal(false)} style={{ marginRight: 10 }} />
+      <VStack
+        w="full"
+        backgroundColor="black"
+        py={5}
+        px={2}
+        flexDirection="row"
+        alignItems="center"
+      >
+        <AntDesign
+          name="left"
+          size={24}
+          color="white"
+          onPress={() => setViewStopsModal(false)}
+          style={{ marginRight: 10 }}
+        />
         <Heading color="white">Controle de paradas</Heading>
       </VStack>
       <ScrollView>
@@ -72,13 +90,16 @@ export default function StopForm({setViewStopsModal, setStops}) {
             )}
             name="reason"
           />
+          {errors.reason && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
+          )}
 
           <Controller
             control={control}
             rules={{
               required: true,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
                   Horário Inicio
@@ -86,21 +107,43 @@ export default function StopForm({setViewStopsModal, setStops}) {
                 <Input
                   size="lg"
                   variant="rounded"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
+                  value={value.toString()}
+                  onTouchStart={() => {
+                    setStartTimeVisibility(true);
+                  }}
+                />
+                <DateTimePickerModal
+                  isVisible={isStartTimeVisible}
+                  mode="time"
+                  onConfirm={(startTime) => {
+                    onChange(
+                      startTime.toLocaleTimeString("pt-BR", {
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: false,
+                      })
+                    );
+                    setSelectedStartTime(startTime);
+                    setStartTimeVisibility(false);
+                  }}
+                  onCancel={() => {
+                    setStartTimeVisibility(false);
+                  }}
                 />
               </>
             )}
             name="startTime"
           />
+          {errors.startTime && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
+          )}
 
           <Controller
             control={control}
             rules={{
               required: true,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
                   Horário Final
@@ -108,14 +151,36 @@ export default function StopForm({setViewStopsModal, setStops}) {
                 <Input
                   size="lg"
                   variant="rounded"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
                   value={value}
+                  onTouchStart={() => {
+                    setEndTimeVisibility(true);
+                  }}
+                />
+                <DateTimePickerModal
+                  isVisible={isEndTimeVisible}
+                  mode="time"
+                  onConfirm={(endTime) => {
+                    onChange(
+                      endTime.toLocaleTimeString("pt-BR", {
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: false,
+                      })
+                    );
+                    setSelectedEndTime(endTime);
+                    setEndTimeVisibility(false);
+                  }}
+                  onCancel={() => {
+                    setEndTimeVisibility(false);
+                  }}
                 />
               </>
             )}
             name="endTime"
           />
+          {errors.endTime && (
+            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
+          )}
 
           <Button
             onPress={handleSubmit(onSubmit)}
