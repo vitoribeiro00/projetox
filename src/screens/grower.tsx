@@ -66,7 +66,8 @@ export default function GrowerScreen({ navigation }) {
       }
       if(!isNaN(data.name)) throw new Error("O nome deve ser composto por letras, apenas.");
       if(isNaN(data.code)) throw new Error("O CPF ou CNPJ deve ser composto por números, apenas.");
-        
+      
+      console.log(data)
 
       CreateRequest(data);
       reset();
@@ -226,21 +227,22 @@ export default function GrowerScreen({ navigation }) {
         <VStack space={3} mx={2} mt={2} mb={2}>
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange } }) => (
               <>
                 <Text fontSize={16} marginLeft={0} marginBottom={2}>
                   Selecione as Operações:
                 </Text>
-                {/* <Checkbox.Group
-                  onChange={onChange}
-                  value={value}
+                <Checkbox.Group
+                  onChange={(values) => {
+                    onChange(values);
+                  }}
                 >
                   <Checkbox value="Araçao" marginBottom={1}>Aração (com arado ou grade aradora)</Checkbox>
                   <Checkbox value="Gradagem" marginBottom={1}>Gradagem</Checkbox>
                   <Checkbox value="Subsolagem" marginBottom={1}>Subsolagem</Checkbox>
                   <Checkbox value="Escarificação" marginBottom={1}>Escarificação</Checkbox>
                   <Checkbox value="Aplicação mecanizada de corretivos" marginBottom={1}>Aplicação mecanizada de corretivos</Checkbox>
-                </Checkbox.Group> */}
+                </Checkbox.Group>
               </>
             )}
             name="operation"
