@@ -64,14 +64,25 @@ export default function ServiceProvider({ navigation, route }) {
     return isNaN(text);
   };
 
+
   const onSubmit = (data) => {
-    CreateServiceProvider(requestId, stops, data);
-    reset();
-    toast.show("Controle de Serviços salvo com sucesso!", {
-      placement: "top",
-      type: "success",
-      duration: 2000,
-    });
+    
+    try {
+      CreateServiceProvider(requestId, stops, data);
+      reset();
+      toast.show("Controle de Serviços salvo com sucesso!", {
+        placement: "top",
+        type: "success",
+        duration: 2000,
+      });
+    } catch (error) {
+      toast.show(error,{
+        placement: "top",
+        type: "danger",
+        duration: 2000,
+      })
+    }
+   
   };
 
   useEffect(() => {
@@ -125,6 +136,7 @@ export default function ServiceProvider({ navigation, route }) {
                 <DateTimePickerModal
                   isVisible={isDateVisible}
                   mode="date"
+                  
                   onConfirm={(date) => {
                     onChange(
                       date.toLocaleDateString("pt-BR", {

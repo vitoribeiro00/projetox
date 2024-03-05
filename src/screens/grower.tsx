@@ -6,9 +6,8 @@ import {
   Text,
   Button,
   ScrollView,
-  FormControl,
-  Select,
-  CheckIcon,
+  View,
+  Checkbox,
 } from "native-base";
 
 import { Controller, useForm } from "react-hook-form";
@@ -32,12 +31,12 @@ export default function GrowerScreen({ navigation }) {
       id: uuid.v4(),
       name: "",
       code: "",
-      owner: "",
       farm: "",
+      farmAdress: "",
       plot: "",
+      plotCoordinate: "",
       operation: "",
       activity: "",
-      insumo: "",
       areaHa: "",
     },
   });
@@ -51,29 +50,48 @@ export default function GrowerScreen({ navigation }) {
   };
 
   const onSubmit = (data) => {
-    CreateRequest(data);
-    reset();
-    toast.show("Requisição criada com sucesso!", {
-      placement: "top",
-      type: "success",
-      duration: 2000,
-    });
+    try {
+      if (
+        data.name === "" ||
+        data.code === "" ||
+        data.farm === "" ||
+        data.farmAdress === "" ||
+        data.plot === "" ||
+        data.plotCoordinate === "" ||
+        // data.operation === "" ||
+        data.activity === "" ||
+        data.areaHa === ""
+      ){
+        throw new Error("Todas as informações são obrigatórias.");
+      }
+      if(!isNaN(data.name)) throw new Error("O nome deve ser composto por letras, apenas.");
+      if(isNaN(data.code)) throw new Error("O CPF ou CNPJ deve ser composto por números, apenas.");
+        
+
+      CreateRequest(data);
+      reset();
+      toast.show("Requisição criada com sucesso!", {
+        placement: "top",
+        type: "success",
+        duration: 3000,
+      });
+      navigation.goBack();
+    } catch (error) {
+      toast.show(error.message, {
+        placement: "top",
+        type: "danger",
+        duration: 2000,
+      });
+    }
   };
 
   return (
     <Container>
       <Header title="Produtor" />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <VStack space={3} mx={2} mt={2}>
+        <VStack space={3} mx={2} mt={2} mb={2}>
           <Controller
             control={control}
-            rules={{
-              required: true,
-              validate: {
-                validInput: (value) =>
-                  isValidInputText(value),
-              },
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -91,23 +109,13 @@ export default function GrowerScreen({ navigation }) {
             )}
             name="name"
           />
-          {errors.name && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente letras.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-              validate: {
-                validInput: (value) =>
-                  isValidInputNumeric(value),
-              },
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
-                  Número de Inscrição
+                  CPF / CNPJ
                 </Text>
                 <Input
                   size="lg"
@@ -121,46 +129,20 @@ export default function GrowerScreen({ navigation }) {
             )}
             name="code"
           />
-          {errors.code && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente números.</Text>
-          )}
+        </VStack>
 
-          {/* <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <>
-                <Text fontSize={16} marginLeft={1}>
-                  Área de:
-                </Text>
-                <Select
-                  size="lg"
-                  placeholder="Selecione"
-                  variant="rounded"
-                  selectedValue={value}
-                  onValueChange={(itemValue: string) => {
-                    onChange(itemValue);
-                  }}
-                >
-                  <Select.Item label="Empresa" value="empresa" />
-                  <Select.Item label="Terceiro" value="terceiro" />
-                </Select>
-              </>
-            )}
-            name="owner"
-          /> */}
+        <View
+          style={{ borderBottomWidth: 2, borderBottomColor: "black" }}
+          mt={2}
+        />
 
+        <VStack space={3} mx={2} mt={2} mb={2}>
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
-                  Fazenda
+                  Código/Nome da Fazenda
                 </Text>
                 <Input
                   size="lg"
@@ -174,49 +156,13 @@ export default function GrowerScreen({ navigation }) {
             )}
             name="farm"
           />
-          {errors.farm && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true ||"É obrigatório o preenchimento.",
-              validate: {
-                validInput: (value) =>
-                  isValidInputNumeric(value),
-              },
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
-                  Talhão
-                </Text>
-                <Input
-                  size="lg"
-                  variant="rounded"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  keyboardType="numeric"
-                />
-              </>
-            )}
-            name="plot"
-          />
-          {errors.plot && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente números.</Text>
-          )}
-
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <>
-                <Text fontSize={16} marginLeft={1}>
-                  Operação
+                  Endereço da Fazenda:
                 </Text>
                 <Input
                   size="lg"
@@ -228,17 +174,80 @@ export default function GrowerScreen({ navigation }) {
                 />
               </>
             )}
-            name="operation"
+            name="farmAdress"
           />
-          {errors.operation && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Código/Nome do Talhão
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  keyboardType="default"
+                />
+              </>
+            )}
+            name="plot"
+          />
+
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Coordenada do Talhão
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  keyboardType="default"
+                />
+              </>
+            )}
+            name="plotCoordinate"
+          />
+        </VStack>
+
+        <View
+          style={{ borderBottomWidth: 2, borderBottomColor: "black" }}
+          mt={2}
+        />
+
+        <VStack space={3} mx={2} mt={2} mb={2}>
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={0} marginBottom={2}>
+                  Selecione as Operações:
+                </Text>
+                {/* <Checkbox.Group
+                  onChange={onChange}
+                  value={value}
+                >
+                  <Checkbox value="Araçao" marginBottom={1}>Aração (com arado ou grade aradora)</Checkbox>
+                  <Checkbox value="Gradagem" marginBottom={1}>Gradagem</Checkbox>
+                  <Checkbox value="Subsolagem" marginBottom={1}>Subsolagem</Checkbox>
+                  <Checkbox value="Escarificação" marginBottom={1}>Escarificação</Checkbox>
+                  <Checkbox value="Aplicação mecanizada de corretivos" marginBottom={1}>Aplicação mecanizada de corretivos</Checkbox>
+                </Checkbox.Group> */}
+              </>
+            )}
+            name="operation"
+          />
+
+          <Controller
+            control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -256,45 +265,9 @@ export default function GrowerScreen({ navigation }) {
             )}
             name="activity"
           />
-          {errors.activity && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <>
-                <Text fontSize={16} marginLeft={1}>
-                  Insumo
-                </Text>
-                <Input
-                  size="lg"
-                  variant="rounded"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  keyboardType="default"
-                />
-              </>
-            )}
-            name="insumo"
-          />
-          {errors.insumo && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
-
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              validate: {
-                validInput: (value) =>
-                  isValidInputNumeric(value),
-              },
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -312,10 +285,14 @@ export default function GrowerScreen({ navigation }) {
             )}
             name="areaHa"
           />
-          {errors.areaHa && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente números.</Text>
-          )}
+        </VStack>
 
+        <View
+          style={{ borderBottomWidth: 2, borderBottomColor: "black" }}
+          mt={2}
+        />
+
+        <VStack space={3} mx={2}>
           <Button
             onPress={handleSubmit(onSubmit)}
             variant="outline"

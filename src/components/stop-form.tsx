@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Controller, useForm } from "react-hook-form";
 import { AntDesign } from "@expo/vector-icons";
+import { useToast } from "react-native-toast-notifications";
 
 export default function StopForm({ setViewStopsModal, setStops }) {
   const [isStartTimeVisible, setStartTimeVisibility] = useState(false);
@@ -19,6 +20,8 @@ export default function StopForm({ setViewStopsModal, setStops }) {
 
   const [selectedStartTime, setSelectedStartTime] = useState(null);
   const [selectedEndTime, setSelectedEndTime] = useState(null);
+
+  const toast = useToast();
 
   const {
     control,
@@ -34,9 +37,25 @@ export default function StopForm({ setViewStopsModal, setStops }) {
   });
 
   const onSubmit = (data) => {
-    setStops((stops) => [...stops, data]);
-    setViewStopsModal(false);
-    reset();
+    try {
+      console.log(new Date("01-01-1970 " + data.endTime + ":00").getTime());
+      console.log(new Date("01-01-1970 " + data.startTime + ":00").getTime());
+      
+
+      if (new Date("01-01-1970 " + data.endTime + ":00").getTime() < new Date("01-01-1970 " + data.startTime + ":00").getTime()){
+        throw new Error("O horario final precisa ser maior que o inicial.");
+      }
+        
+      setStops((stops) => [...stops, data]);
+      setViewStopsModal(false);
+      reset();
+    } catch (error) {
+      toast.show(error.message, {
+        placement: "top",
+        type: "danger",
+        duration: 2000,
+      });
+    }
   };
 
   return (
