@@ -6,7 +6,7 @@ export type ServiceProvider = {
     equipment: string;
     startTime: string;
     endTime: string;
-    insumo: string;
     quantHa: string;
     plot: string;
+    operation: string;
 }

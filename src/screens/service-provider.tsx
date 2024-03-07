@@ -6,6 +6,7 @@ import {
   ScrollView,
   Button,
   Center,
+  IconButton,
 } from "native-base";
 import Container from "../components/container";
 import React, { useEffect, useState } from "react";
@@ -18,9 +19,11 @@ import uuid from "react-native-uuid";
 import StopForm from "../components/stop-form";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useToast } from "react-native-toast-notifications";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function ServiceProvider({ navigation, route }) {
   const requestId = route?.params?.requestId;
+  const requestOperation = route?.params?.requestOperation;
 
   const [stops, setStops] = useState([]);
   const [viewStopsModal, setViewStopsModal] = useState(false);
@@ -50,39 +53,49 @@ export default function ServiceProvider({ navigation, route }) {
       equipment: "",
       startTime: "",
       endTime: "",
-      insumo: "",
       quantHa: "",
       plot: "",
+      operation: "",
     },
   });
 
-  const isValidInputNumeric = (text) => {
-    return !isNaN(text);
-  };
-
-  const isValidInputText = (text) => {
-    return isNaN(text);
-  };
-
-
   const onSubmit = (data) => {
-    
     try {
+      if (
+        data.date === "" ||
+        data.operator === "" ||
+        data.machine === "" ||
+        data.equipment === "" ||
+        data.startTime === "" ||
+        data.endTime === "" ||
+        data.quantHa === "" ||
+        data.plot === "" ||
+        data.operation === ""
+      ) {
+        throw new Error("Todas as informações são obrigatórias.");
+      }
+
+      if (
+        new Date("01-01-1970 " + data.endTime + ":00").getTime() <
+        new Date("01-01-1970 " + data.startTime + ":00").getTime()
+      ) {
+        throw new Error("O horario final precisa ser maior que o inicial.");
+      }
+
       CreateServiceProvider(requestId, stops, data);
       reset();
       toast.show("Controle de Serviços salvo com sucesso!", {
         placement: "top",
         type: "success",
-        duration: 2000,
+        duration: 3000,
       });
     } catch (error) {
-      toast.show(error,{
+      toast.show(error.message, {
         placement: "top",
         type: "danger",
-        duration: 2000,
-      })
+        duration: 3000,
+      });
     }
-   
   };
 
   useEffect(() => {
@@ -112,31 +125,44 @@ export default function ServiceProvider({ navigation, route }) {
             <Text>Nº da requisição</Text>
           </Center>
           <Center>
-            <Text fontSize={16}> {`${requestId}`}</Text>
+            <Text> {`${requestId}`}</Text>
+            <Text> {`${requestOperation}`}</Text>
           </Center>
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
             render={({ field: { onChange, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
                   Data
                 </Text>
                 <Input
-                  size="lg"
-                  variant="rounded"
+                  size={"lg"}
+                  variant={"rounded"}
+                  isDisabled
+                  borderColor={"gray.400"}
                   value={value.toString()}
-                  onTouchStart={() => {
-                    setDateVisibility(true);
-                  }}
+                  placeholder={"Selecione a Data."}
+                  placeholderTextColor={"black"}
+                  InputRightElement={
+                    <IconButton
+                      size={"lg"}
+                      variant={"ghost"}
+                      _icon={{
+                        as: MaterialIcons,
+                        name: "calendar-today",
+                        color: "black",
+                      }}
+                      onPress={() => {
+                        setDateVisibility(true);
+                      }}
+                    ></IconButton>
+                  }
                 />
                 <DateTimePickerModal
                   isVisible={isDateVisible}
                   mode="date"
-                  
+                  locale="pt"
                   onConfirm={(date) => {
                     onChange(
                       date.toLocaleDateString("pt-BR", {
@@ -157,19 +183,9 @@ export default function ServiceProvider({ navigation, route }) {
             )}
             name="date"
           />
-          {errors.date && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-              validate: {
-                validInput: (value) =>
-                  isValidInputText(value),
-              },
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -186,15 +202,9 @@ export default function ServiceProvider({ navigation, route }) {
             )}
             name="operator"
           />
-          {errors.operator && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente letras.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -211,15 +221,9 @@ export default function ServiceProvider({ navigation, route }) {
             )}
             name="machine"
           />
-          {errors.machine && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -236,16 +240,10 @@ export default function ServiceProvider({ navigation, route }) {
             )}
             name="equipment"
           />
-          {errors.equipment && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
                   Horário Inicial
@@ -253,10 +251,25 @@ export default function ServiceProvider({ navigation, route }) {
                 <Input
                   size="lg"
                   variant="rounded"
+                  isDisabled
+                  borderColor={"gray.400"}
                   value={value.toString()}
-                  onTouchStart={() => {
-                    setStartTimeVisibility(true);
-                  }}
+                  placeholder={"Selecione o Horário Inicial."}
+                  placeholderTextColor={"black"}
+                  InputRightElement={
+                    <IconButton
+                      size={"lg"}
+                      variant={"ghost"}
+                      _icon={{
+                        as: MaterialIcons,
+                        name: "timer",
+                        color: "black",
+                      }}
+                      onPress={() => {
+                        setStartTimeVisibility(true);
+                      }}
+                    ></IconButton>
+                  }
                 />
                 <DateTimePickerModal
                   isVisible={isStartTimeVisible}
@@ -280,15 +293,9 @@ export default function ServiceProvider({ navigation, route }) {
             )}
             name="startTime"
           />
-          {errors.startTime && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
             render={({ field: { onChange, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -297,10 +304,25 @@ export default function ServiceProvider({ navigation, route }) {
                 <Input
                   size="lg"
                   variant="rounded"
+                  isDisabled
+                  borderColor={"gray.400"}
+                  placeholder={"Selecione o Horário Final."}
+                  placeholderTextColor={"black"}
                   value={value.toString()}
-                  onTouchStart={() => {
-                    setEndTimeVisibility(true);
-                  }}
+                  InputRightElement={
+                    <IconButton
+                      size={"lg"}
+                      variant={"ghost"}
+                      _icon={{
+                        as: MaterialIcons,
+                        name: "timer",
+                        color: "black",
+                      }}
+                      onPress={() => {
+                        setEndTimeVisibility(true);
+                      }}
+                    ></IconButton>
+                  }
                 />
                 <DateTimePickerModal
                   isVisible={isEndTimeVisible}
@@ -324,44 +346,22 @@ export default function ServiceProvider({ navigation, route }) {
             )}
             name="endTime"
           />
-          {errors.endTime && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
-                  Insumo
+                  Operações realizadas:
                 </Text>
-                <Input
-                  size="lg"
-                  variant="rounded"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
+                
               </>
             )}
-            name="insumo"
+            name="operation"
           />
-          {errors.insumo && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-              validate: {
-                validInput: (value) =>
-                  isValidInputNumeric(value),
-              },
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -379,15 +379,9 @@ export default function ServiceProvider({ navigation, route }) {
             )}
             name="quantHa"
           />
-          {errors.quantHa && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento. Somente números.</Text>
-          )}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -409,9 +403,6 @@ export default function ServiceProvider({ navigation, route }) {
             )}
             name="plot"
           />
-          {errors.plot && (
-            <Text style={{ color: "red" }}>É obrigatório o preenchimento.</Text>
-          )}
 
           <Button
             onPress={() => setViewStopsModal(true)}

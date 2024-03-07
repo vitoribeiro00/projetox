@@ -31,23 +31,27 @@ export default function RequestsScreen({ navigation }) {
         borderColor="black"
         borderWidth={2}
         borderRadius={10}
-        p={3}
-        my={2}
+        p={2}
+        my={3}
       >
-        <View>
+        <View maxW="80">
           <Text>Id: {request?.id}</Text>
           <Text>Cliente: {request?.name}</Text>
           <Text>Fazenda: {request?.farm}</Text>
           <Text>Talhão: {request?.plot}</Text>
-          <Text>Operação: {request?.operation}</Text>
+          <Text>Operação(ões): {request?.operation.join(", ")}</Text>
+          <Text>Atividade(s): {request?.activity.join(", ")}</Text>
         </View>
         <View>
           <AntDesign
             name="right"
-            size={24}
+            size={28}
             color="black"
             onPress={() =>
-              navigation.navigate("serviceProvider", { requestId: request.id })
+              navigation.navigate(
+                "serviceProvider",
+                { requestId: request.id, requestOperation: request.operation },
+              )
             }
           />
         </View>

@@ -6,12 +6,13 @@ import {
   ScrollView,
   Button,
   Heading,
+  IconButton,
 } from "native-base";
 import Container from "../components/container";
 import React, { useState } from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Controller, useForm } from "react-hook-form";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useToast } from "react-native-toast-notifications";
 
 export default function StopForm({ setViewStopsModal, setStops }) {
@@ -40,12 +41,14 @@ export default function StopForm({ setViewStopsModal, setStops }) {
     try {
       console.log(new Date("01-01-1970 " + data.endTime + ":00").getTime());
       console.log(new Date("01-01-1970 " + data.startTime + ":00").getTime());
-      
 
-      if (new Date("01-01-1970 " + data.endTime + ":00").getTime() < new Date("01-01-1970 " + data.startTime + ":00").getTime()){
+      if (
+        new Date("01-01-1970 " + data.endTime + ":00").getTime() <
+        new Date("01-01-1970 " + data.startTime + ":00").getTime()
+      ) {
         throw new Error("O horario final precisa ser maior que o inicial.");
       }
-        
+
       setStops((stops) => [...stops, data]);
       setViewStopsModal(false);
       reset();
@@ -121,15 +124,30 @@ export default function StopForm({ setViewStopsModal, setStops }) {
             render={({ field: { onChange, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
-                  Horário Inicio
+                  Horário Inicial
                 </Text>
                 <Input
                   size="lg"
                   variant="rounded"
+                  isDisabled
+                  borderColor={"gray.400"}
                   value={value.toString()}
-                  onTouchStart={() => {
-                    setStartTimeVisibility(true);
-                  }}
+                  placeholder={"Selecione o Horário Inicial."}
+                  placeholderTextColor={"black"}
+                  InputRightElement={
+                    <IconButton
+                      size={"lg"}
+                      variant={"ghost"}
+                      _icon={{
+                        as: MaterialIcons,
+                        name: "timer",
+                        color: "black",
+                      }}
+                      onPress={() => {
+                        setStartTimeVisibility(true);
+                      }}
+                    ></IconButton>
+                  }
                 />
                 <DateTimePickerModal
                   isVisible={isStartTimeVisible}
@@ -170,10 +188,25 @@ export default function StopForm({ setViewStopsModal, setStops }) {
                 <Input
                   size="lg"
                   variant="rounded"
-                  value={value}
-                  onTouchStart={() => {
-                    setEndTimeVisibility(true);
-                  }}
+                  isDisabled
+                  borderColor={"gray.400"}
+                  placeholder={"Selecione o Horário Final."}
+                  placeholderTextColor={"black"}
+                  value={value.toString()}
+                  InputRightElement={
+                    <IconButton
+                      size={"lg"}
+                      variant={"ghost"}
+                      _icon={{
+                        as: MaterialIcons,
+                        name: "timer",
+                        color: "black",
+                      }}
+                      onPress={() => {
+                        setEndTimeVisibility(true);
+                      }}
+                    ></IconButton>
+                  }
                 />
                 <DateTimePickerModal
                   isVisible={isEndTimeVisible}

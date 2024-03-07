@@ -27,9 +27,9 @@ export default async function CreateServiceProvider(requestId: string, stops, ne
       equipment: newServiceProvider.equipment,
       startTime: newServiceProvider.startTime,
       endTime: newServiceProvider.endTime,
-      insumo: newServiceProvider.insumo,
       quantHa: newServiceProvider.quantHa,
       plot: newServiceProvider.plot,
+      operation: newServiceProvider.operation,
       stops: JSON.stringify(stops)
     }];
   } else {
@@ -41,9 +41,9 @@ export default async function CreateServiceProvider(requestId: string, stops, ne
       equipment: newServiceProvider.equipment,
       startTime: newServiceProvider.startTime,
       endTime: newServiceProvider.endTime,
-      insumo: newServiceProvider.insumo,
       quantHa: newServiceProvider.quantHa,
       plot: newServiceProvider.plot,
+      operation: newServiceProvider.operation,
       stops: JSON.stringify(stops)
     }]
   }

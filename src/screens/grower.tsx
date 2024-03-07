@@ -41,14 +41,6 @@ export default function GrowerScreen({ navigation }) {
     },
   });
 
-  const isValidInputNumeric = (text) => {
-    return !isNaN(text);
-  };
-
-  const isValidInputText = (text) => {
-    return isNaN(text);
-  };
-
   const onSubmit = (data) => {
     try {
       if (
@@ -58,16 +50,16 @@ export default function GrowerScreen({ navigation }) {
         data.farmAdress === "" ||
         data.plot === "" ||
         data.plotCoordinate === "" ||
-        // data.operation === "" ||
+        data.operation === "" ||
         data.activity === "" ||
         data.areaHa === ""
       ){
         throw new Error("Todas as informações são obrigatórias.");
       }
-      if(!isNaN(data.name)) throw new Error("O nome deve ser composto por letras, apenas.");
-      if(isNaN(data.code)) throw new Error("O CPF ou CNPJ deve ser composto por números, apenas.");
+      if(!isNaN(data.name)) throw new Error("O Nome deve ser composto por letras, apenas.");
+      if(isNaN(data.code)) throw new Error("O CPF / CNPJ deve ser composto por números, apenas.");
+      if(isNaN(data.areaHa)) throw new Error("A área deve ser composta por números, apenas.");
       
-      console.log(data)
 
       CreateRequest(data);
       reset();
@@ -81,7 +73,7 @@ export default function GrowerScreen({ navigation }) {
       toast.show(error.message, {
         placement: "top",
         type: "danger",
-        duration: 2000,
+        duration: 3000,
       });
     }
   };
@@ -95,7 +87,7 @@ export default function GrowerScreen({ navigation }) {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
-                <Text fontSize={16} marginLeft={1}>
+                <Text fontSize={16} marginLeft={1} marginTop={1}>
                   Nome
                 </Text>
                 <Input
@@ -142,7 +134,7 @@ export default function GrowerScreen({ navigation }) {
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
               <>
-                <Text fontSize={16} marginLeft={1}>
+                <Text fontSize={16} marginLeft={1} marginTop={1}>
                   Código/Nome da Fazenda
                 </Text>
                 <Input
@@ -229,8 +221,8 @@ export default function GrowerScreen({ navigation }) {
             control={control}
             render={({ field: { onChange } }) => (
               <>
-                <Text fontSize={16} marginLeft={0} marginBottom={2}>
-                  Selecione as Operações:
+                <Text fontSize={16} marginBottom={2} marginTop={1}>
+                  Selecione uma ou mais Operações:
                 </Text>
                 <Checkbox.Group
                   onChange={(values) => {
@@ -242,6 +234,13 @@ export default function GrowerScreen({ navigation }) {
                   <Checkbox value="Subsolagem" marginBottom={1}>Subsolagem</Checkbox>
                   <Checkbox value="Escarificação" marginBottom={1}>Escarificação</Checkbox>
                   <Checkbox value="Aplicação mecanizada de corretivos" marginBottom={1}>Aplicação mecanizada de corretivos</Checkbox>
+                  <Checkbox value="Aplicação mecanizada de Fertilizantes" marginBottom={1}>Aplicação mecanizada de Fertilizantes</Checkbox>
+                  <Checkbox value="Semeadura mecanizada" marginBottom={1}>Semeadura mecanizada</Checkbox>
+                  <Checkbox value="Pulverização mecanizada" marginBottom={1}>Pulverização mecanizada</Checkbox>
+                  <Checkbox value="Colheita mecanizada" marginBottom={1}>Colheita mecanizada</Checkbox>
+                  <Checkbox value="Colheita de silagem" marginBottom={1}>Colheita de silagem</Checkbox>
+                  <Checkbox value="Transporte" marginBottom={1}>Transporte</Checkbox>
+                  <Checkbox value="Manutenção de área/cultura" marginBottom={1}>Manutenção de área/cultura</Checkbox>
                 </Checkbox.Group>
               </>
             )}
@@ -250,19 +249,27 @@ export default function GrowerScreen({ navigation }) {
 
           <Controller
             control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange } }) => (
               <>
-                <Text fontSize={16} marginLeft={1}>
-                  Atividade
+                <Text fontSize={16} marginBottom={2}>
+                  Selecione uma ou mais Atividades:
                 </Text>
-                <Input
-                  size="lg"
-                  variant="rounded"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  keyboardType="default"
-                />
+                <Checkbox.Group
+                  onChange={(values) => {
+                    onChange(values);
+                  }}
+                >
+                  <Checkbox value="Arroz" marginBottom={1}>Arroz</Checkbox>
+                  <Checkbox value="Banana" marginBottom={1}>Banana</Checkbox>
+                  <Checkbox value="Chá" marginBottom={1}>Chá</Checkbox>
+                  <Checkbox value="Hortaliças" marginBottom={1}>Hortaliças</Checkbox>
+                  <Checkbox value="Milho" marginBottom={1}>Milho</Checkbox>
+                  <Checkbox value="Milho Verde" marginBottom={1}>Milho Verde</Checkbox>
+                  <Checkbox value="Milho verde/silagem" marginBottom={1}>Milho verde/silagem</Checkbox>
+                  <Checkbox value="Pastagem" marginBottom={1}>Pastagem</Checkbox>
+                  <Checkbox value="Plantas ornamentais" marginBottom={1}>Plantas ornamentais</Checkbox>
+                  <Checkbox value="Pupunha" marginBottom={1}>Pupunha</Checkbox>
+                </Checkbox.Group>
               </>
             )}
             name="activity"
