@@ -6,7 +6,7 @@ export type Request = {
   farmAdress: string;
   plot: string;
   plotCoordinate: string;
-  operation: string;
-  activity: string;
+  operation: string[];
+  activity: string[];
   areaHa: string;
 }
