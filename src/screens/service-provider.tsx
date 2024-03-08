@@ -7,6 +7,7 @@ import {
   Button,
   Center,
   IconButton,
+  Checkbox,
 } from "native-base";
 import Container from "../components/container";
 import React, { useEffect, useState } from "react";
@@ -70,7 +71,7 @@ export default function ServiceProvider({ navigation, route }) {
         data.endTime === "" ||
         data.quantHa === "" ||
         data.plot === "" ||
-        data.operation === ""
+        data?.operation?.lenght === 0 
       ) {
         throw new Error("Todas as informações são obrigatórias.");
       }
@@ -354,6 +355,11 @@ export default function ServiceProvider({ navigation, route }) {
                 <Text fontSize={16} marginLeft={1}>
                   Operações realizadas:
                 </Text>
+                <Checkbox.Group onChange={(value) => onChange(value)}>
+                  {requestOperation?.map((operation) => (
+                    <Checkbox marginLeft={1} value={operation}>{operation}</Checkbox>
+                  ))}
+                </Checkbox.Group>
                 
               </>
             )}
