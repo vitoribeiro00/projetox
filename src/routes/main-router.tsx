@@ -5,7 +5,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/home";
 import GrowerScreen from "../screens/grower";
 import ServiceProviderScreen from "../screens/service-provider";
-import StopControl from "../screens/stop-control";
 import RequestsScreen from "../screens/requests";
 
 const Stack = createNativeStackNavigator();
