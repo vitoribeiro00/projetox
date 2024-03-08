@@ -39,8 +39,8 @@ export default function RequestsScreen({ navigation }) {
           <Text>Cliente: {request?.name}</Text>
           <Text>Fazenda: {request?.farm}</Text>
           <Text>Talhão: {request?.plot}</Text>
-          <Text>Operação(ões): {request?.operation.join(", ")}</Text>
-          <Text>Atividade(s): {request?.activity.join(", ")}</Text>
+          <Text>Operação(ões): {request?.operation?.join(", ") || request?.operation}</Text>
+          <Text>Atividade(s): {request?.activity?.join(", ") || request?.activity}</Text>
         </View>
         <View>
           <AntDesign
