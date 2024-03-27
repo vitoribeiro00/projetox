@@ -4,10 +4,6 @@ import { ServiceProvider } from "../models/service-provider-model";
 import { Request } from "../models/request-model";
 
 export default async function CreateServiceProvider(requestId: string, stops, newServiceProvider: ServiceProvider) {
-  if(newServiceProvider.endTime > newServiceProvider.startTime){
-    throw new Error("O horario final precisa ser maior que o inicial.")
-  }
-
   const requestsStorage = await AsyncStorage.getItem('requests');
   
   const requestsNotUpdate = JSON.parse(requestsStorage).filter((request: Request) => requestId !== request.id); 
@@ -50,11 +46,11 @@ export default async function CreateServiceProvider(requestId: string, stops, ne
 
   const requestUpdated = {...requestToUpdated[0], serviceProvider: JSON.stringify(serviceProvider)}
 
-  console.log(requestUpdated)
-  
-
   if(requestsNotUpdate.length > 0){
-    await AsyncStorage.setItem('requests', JSON.stringify(requestsNotUpdate.push(requestUpdated)));
+    await AsyncStorage.setItem('requests', JSON.stringify([
+      ...requestsNotUpdate,
+      requestUpdated
+    ]));
   } else {
     await AsyncStorage.setItem('requests', JSON.stringify([requestUpdated]));
   }

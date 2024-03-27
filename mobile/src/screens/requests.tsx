@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { VStack, FlatList, Text, View, Center } from "native-base";
+import { VStack, FlatList, Text, View, Center, HStack, IconButton } from "native-base";
 
 import Container from "../components/container";
 import Header from "../components/header";
@@ -28,14 +28,13 @@ export default function RequestsScreen({ navigation }) {
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
-        borderColor="black"
+        borderColor="#1414b8"
         borderWidth={2}
         borderRadius={10}
         p={2}
         my={3}
       >
         <View maxW="80">
-          <Text>Id: {request?.id}</Text>
           <Text>Cliente: {request?.name}</Text>
           <Text>Fazenda: {request?.farm}</Text>
           <Text>Talhão: {request?.plot}</Text>
@@ -46,7 +45,7 @@ export default function RequestsScreen({ navigation }) {
           <AntDesign
             name="right"
             size={28}
-            color="black"
+            color="#1414b8"
             onPress={() =>
               navigation.navigate(
                 "serviceProvider",
@@ -62,6 +61,7 @@ export default function RequestsScreen({ navigation }) {
   return (
     <Container>
       <Header title="Requisições" />
+     
       <VStack space={3} mx={5} my={2}>
         <FlatList
           data={myRequests}

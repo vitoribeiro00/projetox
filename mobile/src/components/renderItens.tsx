@@ -1,12 +1,10 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { Request } from "../models/requestModel";
+import { Text, TouchableOpacity } from "react-native";
 
 export const renderItens = ({item}) => (
   <TouchableOpacity >
     <Text>{item.name}</Text>
     <Text>{item.code}</Text>
-    <Text>{item.owner}</Text>
     <Text>{item.farm}</Text>
     <Text>{item.plot}</Text>
     <Text>{item.operation}</Text>

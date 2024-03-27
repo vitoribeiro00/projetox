@@ -10,12 +10,10 @@ export default async function listRequests(): Promise<any[]> {
       id: request.id,
       name: request.name,
       code: request.code,
-      owner: request.owner,
       farm: request.farm,
       plot: request.plot,
       operation: request.operation,
       activity: request.activity,
-      insumo: request.insumo,
       areaHa: request.areaHa,
       serviceProvider: request?.serviceProvider
     }

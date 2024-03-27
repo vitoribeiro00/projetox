@@ -11,7 +11,7 @@ type Props = {
 const Header: React.FC<Props> = ({ title }: Props) => {
   const navigation = useNavigation()
   return (
-    <VStack w="full" backgroundColor="black" py={5} px={2} flexDirection="row" alignItems="center">
+    <VStack w="full" backgroundColor="#1414b8" py={5} px={2} flexDirection="row" alignItems="center">
       <AntDesign name="left" size={24} color="white" onPress={() => navigation.goBack()} style={{ marginRight: 10 }} />
       <Heading color="white">{title}</Heading>
     </VStack>

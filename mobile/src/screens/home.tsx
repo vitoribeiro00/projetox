@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Button, Heading, VStack, View } from "native-base";
+import { Button, Center, Heading, VStack, View } from "native-base";
 import Container from "../components/container";
 import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -7,44 +7,58 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function HomeScreen({ navigation }) {
   return (
     <Container>
+      <VStack mt={10}>
+        <Center>
+          <Heading size="2xl" color="#1414b8">LAMMEC</Heading>
+          <Heading size="sm" color="#1414b8">Controle de Operações Agrícola</Heading>
+        </Center>
+      </VStack>
       <VStack flex={1} justifyContent="center" alignItems="center" space={5} mx={10}>
-        <Heading size="2xl">PROJETO - X</Heading>
         <Button
           w="full"
-          size="lg"
+          size="md"
           onPress={() => navigation.navigate("grower")}
-          variant="outline"
           rounded={15}
-          borderColor="#1414b8"
-          colorScheme="#000000"
+          backgroundColor="#1414b8"
+          color="#ffffff"
         >
           Produtor
         </Button>
 
         <Button
           w="full"
-          size="lg"
+          size="md"
           onPress={() => navigation.navigate("requestsScreen")}
-          variant="outline"
           rounded={15}
-          borderColor="#1414b8"
-          colorScheme="#000000"
+          backgroundColor="#1414b8"
+          color="#ffffff"
         >
           Prestador de Serviço
         </Button>
 
         <Button
           w="full"
-          size="lg"
-          onPress={async () => await AsyncStorage.clear()}
-          variant="outline"
+          size="md"
+          onPress={() => navigation.navigate("requestsSyncScreen")}
           rounded={15}
-          borderColor="#1414b8"
-          colorScheme="#000000"
+          backgroundColor="#1414b8"
+          color="#ffffff"
+        >
+          Sincronizar Requisições
+        </Button>
+
+
+        {/* <Button
+          w="full"
+          size="md"
+          onPress={async () => await AsyncStorage.clear()}
+          rounded={15}
+          backgroundColor="#1414b8"
+          color="#ffffff"
          
         >
           Limpar AsyncStorage
-        </Button>
+        </Button> */}
 
         </VStack>
     </Container>

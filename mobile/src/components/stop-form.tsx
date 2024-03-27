@@ -39,9 +39,6 @@ export default function StopForm({ setViewStopsModal, setStops }) {
 
   const onSubmit = (data) => {
     try {
-      console.log(new Date("01-01-1970 " + data.endTime + ":00").getTime());
-      console.log(new Date("01-01-1970 " + data.startTime + ":00").getTime());
-
       if (
         new Date("01-01-1970 " + data.endTime + ":00").getTime() <
         new Date("01-01-1970 " + data.startTime + ":00").getTime()

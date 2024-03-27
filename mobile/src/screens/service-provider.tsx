@@ -52,6 +52,7 @@ export default function ServiceProvider({ navigation, route }) {
       operator: "",
       machine: "",
       equipment: "",
+      insumo: "",
       startTime: "",
       endTime: "",
       quantHa: "",
@@ -82,7 +83,10 @@ export default function ServiceProvider({ navigation, route }) {
       ) {
         throw new Error("O horario final precisa ser maior que o inicial.");
       }
+      
 
+      if(!requestId) throw new Error("Requisição não encontrada");
+      
       CreateServiceProvider(requestId, stops, data);
       reset();
       toast.show("Controle de Serviços salvo com sucesso!", {
@@ -98,10 +102,6 @@ export default function ServiceProvider({ navigation, route }) {
       });
     }
   };
-
-  useEffect(() => {
-    console.log(stops);
-  }, [stops]);
 
   if (requestId === null) {
     return (
@@ -126,7 +126,6 @@ export default function ServiceProvider({ navigation, route }) {
             <Text>Nº da requisição</Text>
           </Center>
           <Center>
-            <Text> {`${requestId}`}</Text>
             <Text> {`${requestOperation}`}</Text>
           </Center>
 
@@ -244,6 +243,25 @@ export default function ServiceProvider({ navigation, route }) {
 
           <Controller
             control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <>
+                <Text fontSize={16} marginLeft={1}>
+                  Insumo
+                </Text>
+                <Input
+                  size="lg"
+                  variant="rounded"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              </>
+            )}
+            name="insumo"
+          />
+
+          <Controller
+            control={control}
             render={({ field: { onChange, value } }) => (
               <>
                 <Text fontSize={16} marginLeft={1}>
@@ -357,7 +375,7 @@ export default function ServiceProvider({ navigation, route }) {
                 </Text>
                 <Checkbox.Group onChange={(value) => onChange(value)}>
                   {requestOperation?.map((operation) => (
-                    <Checkbox marginLeft={1} value={operation}>{operation}</Checkbox>
+                    <Checkbox marginLeft={1} value={operation} isChecked={value.includes(operation)}>{operation}</Checkbox>
                   ))}
                 </Checkbox.Group>
                 
